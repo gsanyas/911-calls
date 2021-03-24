@@ -21,7 +21,7 @@ GET <nom de votre index>/_count
 
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
-Compter le nombre d'appels par catégorie
+### Compter le nombre d'appels par catégorie
 
 En trois requêtes
 
@@ -58,7 +58,7 @@ GET 911-calls/_count
 }
 ```
 
-En une seule requête ( champ `["responses"]["total"]["value"`)
+En une seule requête (champ `["total"]["value"]` dans chaque élément du champ `["responses"]`)
 
 ```shell
 GET 911-calls/_msearch
@@ -68,6 +68,22 @@ GET 911-calls/_msearch
 {"size":0,"track_total_hits":true,"query": {"wildcard": {"title": {"value": "Fire*"}}}}
 {}
 {"size":0,"track_total_hits":true,"query": {"wildcard": {"title": {"value": "Traffic*"}}}}
+```
+
+### Trouver les 3 mois ayant comptabilisés le plus d'appels
+
+```shell
+POST /911-calls/_search?size=10
+{
+  "aggs": {
+    "calls_by_month": {
+      "date_histogram": {
+        "field": "timeStamp",
+        "calendar_interval": "month"
+      }
+    }
+  }
+}
 ```
 
 ## Kibana
