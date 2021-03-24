@@ -59,6 +59,17 @@ db.calls.aggregate([
 ])
 ```
 
+Trouver le top 3 des villes avec le plus d'appels pour overdose
+
+```shell
+db.calls.aggregate([
+  { $match: ({title: 'EMS: OVERDOSE'}) },
+  { $group: {_id: '$twp', total:{$sum:1} } },
+  { $sort: {total: -1}},
+  { $limit: 3 }
+])
+```
+
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
 * Proximity search : https://docs.mongodb.com/manual/tutorial/query-a-2dsphere-index/#proximity-to-a-geojson-point
