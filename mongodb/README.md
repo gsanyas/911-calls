@@ -49,6 +49,16 @@ db.calls.aggregate([
 ])
 ```
 
+Trouver les 3 mois ayant comptabilisés le plus d'appels
+
+```shell
+db.calls.aggregate([
+  {$group:{_id:{$substr: ['$timeStamp', 0, 7]}, total:{$sum:1}}},
+  {$sort: {total: -1}},
+  {$limit: 3}
+])
+```
+
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
 * Proximity search : https://docs.mongodb.com/manual/tutorial/query-a-2dsphere-index/#proximity-to-a-geojson-point
