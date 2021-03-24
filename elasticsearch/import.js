@@ -26,7 +26,7 @@ async function run() {
           zip: {type: "integer"},
           title: {type: "text"},
           timeStamp: {type: "date", format: "yyyy-MM-dd HH:mm:ss"},
-          twp: {type: "text"},
+          twp: {type: "keyword"},
           addr: {type: "text"},
           e: {type: "integer"}
         }
