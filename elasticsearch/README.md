@@ -86,6 +86,60 @@ POST /911-calls/_search?size=10
 }
 ```
 
+### Trouver le top 3 des villes avec le plus d'appels pour overdose
+
+Not working !!
+
+```shell
+POST /911-calls/_search?size=1
+{
+  "aggs": {
+    "sorted_cities_by_call": {
+      "terms": {
+        "field": "twp",
+          "order": {
+            "": "asc"
+          }
+      }
+    },
+    "aggs": {
+      "calls_per_city": {
+        "terms": {
+          "field": "twp"
+        }
+      }
+    }
+  }
+    
+}
+```
+
+### Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
+
+```shell
+GET 911-calls/_search?size=0
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "500m",
+          "loc": {
+            "lat": 40.241493,
+            "lon": -75.283783
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Le résultat est dans `["hits"]["total"]["value"]`.
+
 ## Kibana
 
 Dans Kibana, créez un dashboard qui permet de visualiser :
