@@ -70,6 +70,21 @@ db.calls.aggregate([
 ])
 ```
 
+Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
+
+```shell
+db.calls.updateMany({},[
+  {$set: {loc: { type: "Point", coordinates: [
+    {$convert: {input: '$lng', to: "double"} },
+    {$convert: {input: '$lat', to: "double"} }
+  ] }}}
+])
+db.calls.createIndex( { loc: "2dsphere" } )
+db.calls.find({ loc:
+  { $near :{$geometry: { type: "Point",  coordinates: [ -75.283783, 40.241493 ] },$maxDistance: 500} }
+}).count()
+```
+
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
 * Proximity search : https://docs.mongodb.com/manual/tutorial/query-a-2dsphere-index/#proximity-to-a-geojson-point
