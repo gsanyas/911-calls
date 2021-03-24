@@ -73,13 +73,16 @@ GET 911-calls/_msearch
 ### Trouver les 3 mois ayant comptabilisés le plus d'appels
 
 ```shell
-POST /911-calls/_search?size=10
+POST /911-calls/_search?size=0
 {
   "aggs": {
     "calls_by_month": {
       "date_histogram": {
         "field": "timeStamp",
-        "calendar_interval": "month"
+        "calendar_interval": "month",
+        "order": {
+          "_count": "desc"
+        }
       }
     }
   }
