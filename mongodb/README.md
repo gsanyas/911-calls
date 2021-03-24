@@ -13,7 +13,7 @@ node import.js
 
 Vérifiez que les données ont été importées correctement grâce au shell (le nombre total de documents doit être `153194`) :
 
-```
+```shell
 use 911-calls
 db.calls.count()
 ```
@@ -31,8 +31,22 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
-```
-TODO : ajouter les requêtes MongoDB ici
+Compter le nombre d'appels par catégorie
+
+```shell
+db.calls.createIndex( { title: "text" } )
+db.calls.aggregate([
+  { $match: ({ $text: { $search: "EMS:" } }) },
+  { $count : 'EMS' }
+])
+db.calls.aggregate([
+  { $match: ({ $text: { $search: "Fire:" } }) },
+  { $count : 'Fire' }
+])
+db.calls.aggregate([
+  { $match: ({ $text: { $search: "Traffic:" } }) },
+  { $count : 'Traffic' }
+])
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
