@@ -13,7 +13,7 @@ node import.js
 
 Vérifiez que les données ont été importées correctement grâce au shell (le nombre total de documents doit être `153194`) :
 
-```
+```shell
 GET <nom de votre index>/_count
 ```
 
@@ -21,8 +21,53 @@ GET <nom de votre index>/_count
 
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
+Compter le nombre d'appels par catégorie
+
+En trois requêtes
+
+```shell
+GET 911-calls/_count
+{
+  "query": {
+        "wildcard": {
+           "title": {
+              "value": "EMS*"
+           }
+        }
+    }
+}
+GET 911-calls/_count
+{
+  "query": {
+        "wildcard": {
+           "title": {
+              "value": "Fire*"
+           }
+        }
+    }
+}
+GET 911-calls/_count
+{
+  "query": {
+        "wildcard": {
+           "title": {
+              "value": "Traffic*"
+           }
+        }
+    }
+}
 ```
-TODO : ajouter les requêtes ElasticSearch ici
+
+En une seule requête ( champ `["responses"]["total"]["value"`)
+
+```shell
+GET 911-calls/_msearch
+{}
+{"size":0,"track_total_hits":true,"query": {"wildcard": {"title": {"value": "EMS*"}}}}
+{}
+{"size":0,"track_total_hits":true,"query": {"wildcard": {"title": {"value": "Fire*"}}}}
+{}
+{"size":0,"track_total_hits":true,"query": {"wildcard": {"title": {"value": "Traffic*"}}}}
 ```
 
 ## Kibana
